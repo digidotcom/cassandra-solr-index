@@ -1,0 +1,45 @@
+---
+- hosts: apt
+  user: freight
+  vars:
+    # Whether or not to stage the package to freight
+    stage: true
+    # See the stage.bash script. These parameters are always overrridden using --extra-vars parameter or the hosts file
+    repo_name: dev_mtk_cdb_1
+    ubuntu_distribution: precise
+    deb_package: cassandra-index
+    deb_filename: "{{deb_package}}-1.0.0.deb"
+        
+    apt_repository: apt/{{ubuntu_distribution}}/{{repo_name}}
+    freight_dir: /var/lib/freight/{{apt_repository}}
+    
+  tasks:
+    - name: upload {{deb_srclocation}} to freight home directory
+      copy: src={{deb_srclocation}} dest=~/{{deb_filename}}
+
+      # You'll get a warning here about using the file module, but that guy doesn't support
+      # file globbing so we'll do it this way. 
+    - name: ensure deb and control files are unstaged from freight
+      shell: rm -f {{item}}
+      with_items:
+        - "{{freight_dir}}/{{deb_package}}*.deb*"
+      when: stage
+      
+    - name: update freight cache to clear the package
+      shell: freight cache
+      when: stage
+
+    - name: add {{deb_filename}} to freight at {{apt_repository}}
+      shell: freight add ~/{{deb_filename}} {{apt_repository}}
+      when: stage
+
+      # The freight cache command can remove the package from the repository instead
+      # of updating it if there was not a previous freight cache after the removal 
+      # of the package.  Either call freight cache after removal and again after 
+      # freight add or call freight cache twice after freight add.
+    - name: update freight cache to add the new package to repository
+      shell: freight cache
+      when: stage
+      
+    - name: delete ~/{{deb_filename}}
+      file: path=~/{{deb_filename}} state=absent

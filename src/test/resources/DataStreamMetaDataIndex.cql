@@ -1,0 +1,1 @@
+CREATE CUSTOM INDEX "TestKeyspace_DataStreamMetaData_rowKeySearch_index" ON "TestKeyspace"."DataStreamMetaData" ("rowKeySearch") USING 'com.digi.cassandra.index.SolrIndexer';

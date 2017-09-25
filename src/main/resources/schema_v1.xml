@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="dataStreamMetaData" version="1.1">
+    <types>
+        <fieldType name="string" class="solr.StrField" omitNorms="true"/>
+        <fieldType name="long" class="solr.LongField" />
+        <fieldType name="int" class="solr.IntField" />
+        <fieldType name="blob" class="solr.BinaryField" />
+    </types>
+    <fields>
+        <field name="cstId" type="int" indexed="true" stored="true" />
+        <field name="rowKey" type="string" indexed="true" stored="true" />
+        <field name="streamId" type="string" indexed="true" stored="true" />
+        <field name="description" type="string" indexed="true" stored="true" />
+        <field name="units" type="string" indexed="true" stored="true" />
+        <field name="lastUpdated" type="long" indexed="true" stored="true" />
+        <field name="dataType" type="string" indexed="true" stored="true" />
+        <field name="rowKeySearch" type="string" indexed="true" stored="true" />
+        <field name="_version_" type="long" indexed="true" stored="true" multiValued="false"/>
+    </fields>
+    <defaultSearchField>rowKey</defaultSearchField>
+    <uniqueKey>rowKey</uniqueKey>
+</schema>

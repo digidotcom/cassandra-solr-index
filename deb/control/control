@@ -1,0 +1,10 @@
+Package: [[name]]
+Version: [[deb.version]]
+Section: java
+Priority: optional
+Architecture: all
+Depends: [[deb.depends]]
+Conflicts: [[deb.conflicts]]
+Maintainer: Nobody <nobody@nobody.com>
+Description: [[deb.description]]
+Distribution: stable
